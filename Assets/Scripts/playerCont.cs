@@ -16,6 +16,7 @@ public class playerCont : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     public healthBar hb;
+    private bool isRunning;
     //jumping
     private bool isGrounded;
     public Transform groundCheck;
@@ -71,6 +72,24 @@ public class playerCont : MonoBehaviour
 
         canMove = cooldown <= 0;
         combo -= Time.deltaTime;
+
+        if (Input.GetKey("a") || Input.GetKey("d"))
+        {
+            bool isRunning = true;
+            if (isGrounded)
+            {
+
+                anim.SetBool("running", isRunning);
+
+            }
+
+        }
+        else {
+
+            isRunning = false;
+            anim.SetBool("running", isRunning);
+
+        }
 
         if (combo <= 0)
         {
