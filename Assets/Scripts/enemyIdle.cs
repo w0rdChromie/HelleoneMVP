@@ -11,14 +11,20 @@ public class enemyIdle : MonoBehaviour
     public float idleDist;
     private float stunTime;
     public float startStun;
+    public bool ishurt;
 
     private bool movingRight = true;
     public Transform groundDetect;
 
+    private Renderer rend;
+
+    [SerializeField] private Color regColor = Color.white;
+    [SerializeField] private Color hurtColor = Color.white;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        rend = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -28,6 +34,7 @@ public class enemyIdle : MonoBehaviour
         if (stunTime <= 0) {
 
             enemySpd = 2;
+            ishurt = false;
         
         }
         else {
@@ -42,6 +49,18 @@ public class enemyIdle : MonoBehaviour
 
             Destroy(gameObject);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+
+        }
+
+        if (ishurt)
+        {
+
+            rend.material.color = hurtColor;
+
+        }
+        else {
+
+            rend.material.color = regColor;
 
         }
 
@@ -70,6 +89,7 @@ public class enemyIdle : MonoBehaviour
 
         stunTime = startStun;
         enemyHealth -= damage;
+        ishurt = true;
     
     }
 
@@ -78,6 +98,11 @@ public class enemyIdle : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+
+        if (collision.gameObject.CompareTag("Sword"))
+        {
+            TakeDamage(1);
         }
     }
 
